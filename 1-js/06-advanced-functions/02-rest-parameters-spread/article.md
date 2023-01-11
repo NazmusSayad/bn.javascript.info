@@ -1,68 +1,71 @@
-# Rest parameters and spread syntax
+# রেস্ট প্যারামিটার এবং স্প্রেড সিনট্যাক্স
 
-Many JavaScript built-in functions support an arbitrary number of arguments.
+# অনেক জাভাস্ক্রিপ্ট অন্তর্নির্মিত ফাংশন ইচ্ছামত সংখ্যাতে আর্গুমেন্ট নিতে পারে।
 
-For instance:
+এই ক্ষেত্রেঃ
 
-- `Math.max(arg1, arg2, ..., argN)` -- returns the greatest of the arguments.
-- `Object.assign(dest, src1, ..., srcN)` -- copies properties from `src1..N` into `dest`.
-- ...and so on.
+- `Math.max(arg1, arg2, ..., argN)` -- আর্গুমেন্টগুলির সবচেয়ে বড়টি ফেরত দেই।
+- `Object.assign(dest, src1, ..., srcN)` -- `dest` এর মধ্যে `src1..N` থেকে প্রপার্টি গুলো অনুলিপি করে.
+- ...ইত্যাদি.
 
+এই অধ্যায়ে আমরা শিখব কিভাবে একই জিনিসটা করতে হয়। এবং কিভাবে অ্যারেকে প্যারামিটার হিসেবে এমন ফাংশনে ব্যবহার করতে হয়।
 In this chapter we'll learn how to do the same. And also, how to pass arrays to such functions as parameters.
 
-## Rest parameters `...`
+## রেস্ট প্যারামিটার `...`
 
-A function can be called with any number of arguments, no matter how it is defined.
+একটি ফাংশনকে যেকোনো সংখ্যাতে আর্গুমেন্ট দিয়ে কল করা যায়, কিভাবে সংজ্ঞায়িত করা হয় কোন ব্যাপার না।
 
-Like here:
+যেমন এখানে:
+
 ```js run
 function sum(a, b) {
-  return a + b;
+  return a + b
 }
 
-alert( sum(1, 2, 3, 4, 5) );
+alert(sum(1, 2, 3, 4, 5))
 ```
 
-There will be no error because of "excessive" arguments. But of course in the result only the first two will be counted.
+এখানে অতিরিক্ত আর্গুমেন্টস এর জন্য কোন ইরর হবে না। তবে অবশ্যই ফলাফলে প্রথম ২ টা গননা করা হবে।
 
-The rest of the parameters can be included in the function definition by using three dots `...` followed by the name of the array that will contain them. The dots literally mean "gather the remaining parameters into an array".
+বাকি প্যারামিটারগুলিকে তিনটি বিন্দু `...` ব্যবহার করে যে অ্যারেতে তাদের রাখা হবে সেই নামে দিয়ে ফাংশনে অন্তর্ভুক্ত করা যেতে পারে। তিনটি বিন্দু মানে "একটি অ্যারের মধ্যে অবশিষ্ট প্যারামিটার সংগ্রহ করা"।
 
-For instance, to gather all arguments into array `args`:
+এই ক্ষেত্রে, সব আর্গুমেন্ট গুলকে একটা অ্যারে `args` তে সংগ্রহ করতে :
 
 ```js run
-function sumAll(...args) { // args is the name for the array
-  let sum = 0;
+function sumAll(...args) {
+  // args হল অ্যারেটার নাম
+  let sum = 0
 
-  for (let arg of args) sum += arg;
+  for (let arg of args) sum += arg
 
-  return sum;
+  return sum
 }
 
-alert( sumAll(1) ); // 1
-alert( sumAll(1, 2) ); // 3
-alert( sumAll(1, 2, 3) ); // 6
+alert(sumAll(1)) // 1
+alert(sumAll(1, 2)) // 3
+alert(sumAll(1, 2, 3)) // 6
 ```
 
-We can choose to get the first parameters as variables, and gather only the rest.
+আমরা চাইলে প্রথম প্যারামিটারকে ভ্যারিয়েবল হিসেবে নিতে পারি, এবং অবশিষ্টগুলোকে সংগ্রহ করতে পারি।
 
-Here the first two arguments go into variables and the rest go into `titles` array:
+এখানে প্রথম ২ টা আর্গুমেন্ট ভ্যারিয়েবল গুলোতে এবং অবশিষ্টগুলো `titles` অ্যারেতেঃ
 
 ```js run
 function showName(firstName, lastName, ...titles) {
-  alert( firstName + ' ' + lastName ); // Julius Caesar
+  alert(firstName + ' ' + lastName) // Julius Caesar
 
-  // the rest go into titles array
+  // অবশিষ্টগুলো `titles` অ্যারেতে
   // i.e. titles = ["Consul", "Imperator"]
-  alert( titles[0] ); // Consul
-  alert( titles[1] ); // Imperator
-  alert( titles.length ); // 2
+  alert(titles[0]) // Consul
+  alert(titles[1]) // Imperator
+  alert(titles.length) // 2
 }
 
-showName("Julius", "Caesar", "Consul", "Imperator");
+showName('Julius', 'Caesar', 'Consul', 'Imperator')
 ```
 
-````warn header="The rest parameters must be at the end"
-The rest parameters gather all remaining arguments, so the following does not make sense and causes an error:
+````warn header="রেস্ট প্যারামিটার অবশ্যই সবচেয়ে শেষে হবে"
+রেস্ট প্যারামিটার অবশিষ্ট সব আর্গুমেন্ট সংগ্রহ করে। সুতরাং এইটার কোন মানেই হয়না এবং এটা একটা ইরর ঘটায়ঃ
 
 ```js
 function f(arg1, ...rest, arg2) { // arg2 after ...rest ?!
@@ -70,30 +73,30 @@ function f(arg1, ...rest, arg2) { // arg2 after ...rest ?!
 }
 ```
 
-The `...rest` must always be last.
+`...rest` অবশ্যই সবচেয়ে শেষে হবে।
 ````
 
-## The "arguments" variable
+## "arguments" ভ্যারিয়েবল।
 
-There is also a special array-like object named `arguments` that contains all arguments by their index.
+`arguments` নামে আরও একটা বিশেষ অ্যারের মত অবজেক্ট আছে যেটা সবকয়টি আর্গুমেন্টকে তাদের ইনডেক্স ের অনুসারে রাখে।
 
-For instance:
+এই ক্ষেত্রে:
 
 ```js run
 function showName() {
-  alert( arguments.length );
-  alert( arguments[0] );
-  alert( arguments[1] );
+  alert(arguments.length)
+  alert(arguments[0])
+  alert(arguments[1])
 
-  // it's iterable
+  // এটা পুনরাবৃত্তিযোগ্য
   // for(let arg of arguments) alert(arg);
 }
 
 // shows: 2, Julius, Caesar
-showName("Julius", "Caesar");
+showName('Julius', 'Caesar')
 
 // shows: 1, Ilya, undefined (no second argument)
-showName("Ilya");
+showName('Ilya')
 ```
 
 In old times, rest parameters did not exist in the language, and using `arguments` was the only way to get all arguments of the function. And it still works, we can find it in the old code.
@@ -111,14 +114,15 @@ Here's an example:
 
 ```js run
 function f() {
-  let showArg = () => alert(arguments[0]);
-  showArg();
+  let showArg = () => alert(arguments[0])
+  showArg()
 }
 
-f(1); // 1
+f(1) // 1
 ```
 
 As we remember, arrow functions don't have their own `this`. Now we know they don't have the special `arguments` object either.
+
 ````
 
 
@@ -287,3 +291,4 @@ Use patterns:
 Together they help to travel between a list and an array of parameters with ease.
 
 All arguments of a function call are also available in "old-style" `arguments`: array-like iterable object.
+````
